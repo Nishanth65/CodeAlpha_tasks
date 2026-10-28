@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign In &bull; Social Connect{% endblock %}
+
+{% block standalone %}
+<div class="standalone-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <img src="{% static 'images/logo.svg' %}" alt="Social Connect" class="auth-logo">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to your Social Connect account</p>
+        </div>
+
+        <form method="post" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-error" style="margin-bottom: 20px;">
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_username" class="form-label">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="form-error">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password" class="form-label">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="form-error">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
+                Sign In
+            </button>
+        </form>
+
+        <div class="form-footer">
+            Don't have an account yet? 
+            <a href="{% url 'register' %}">Create an account</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

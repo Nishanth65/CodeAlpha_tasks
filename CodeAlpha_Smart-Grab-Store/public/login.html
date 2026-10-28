@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | Smart Grab Store</title>
+  <meta name="description" content="Sign in to your AuraStore account to browse products, track orders, and enjoy fast checkout." />
+  <link rel="icon" type="image/png" href="images/smart-grab-logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="login.html" class="brand-logo" id="brand-logo">
+        <div class="brand-icon">
+          <img src="images/smart-grab-logo.png" alt="Smart Grab Store Logo" class="brand-logo-img" />
+        </div>
+        <span>Smart Grab <span class="highlight">Store</span></span>
+      </a>
+
+      <nav class="nav-menu">
+        <div id="nav-auth-container" style="display: flex; align-items: center; gap: 14px;">
+          <a href="login.html" class="nav-link active" id="nav-login">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Sign In
+          </a>
+          <a href="register.html" class="nav-link" id="nav-register">Create Account</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Login Form Container -->
+  <main class="container">
+    <div class="auth-wrapper">
+      <div class="auth-header">
+        <div class="auth-icon">🔐</div>
+        <h1 class="auth-title">Welcome to Smart Grab Store</h1>
+        <p class="auth-subtitle">Please sign in to access the product catalog and your account</p>
+      </div>
+
+      <div id="login-error" class="alert alert-danger" role="alert" style="display: none;"></div>
+      <div id="login-success" class="alert alert-success" role="status" style="display: none;"></div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input
+            type="email"
+            id="login-email"
+            name="email"
+            class="form-control"
+            placeholder="name@example.com"
+            required
+            autocomplete="email"
+          />
+          <div class="field-error-hint" id="login-email-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              class="form-control"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="btn-toggle-password"
+              id="toggle-login-password"
+              aria-label="Show password"
+              title="Show or hide password"
+            >
+              <svg class="eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+          <div class="field-error-hint" id="login-password-error"></div>
+        </div>
+
+        <button type="submit" id="btn-login-submit" class="btn-auth-submit">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account yet? <a href="register.html" id="link-to-register">Create an account here</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="login.html" class="brand-logo">
+          <div class="brand-icon">
+            <img src="images/smart-grab-logo.png" alt="Smart Grab Store Logo" class="brand-logo-img" />
+          </div>
+          <span>Smart Grab <span class="highlight">Store</span></span>
+        </a>
+        <p class="footer-text">Curated lifestyle essentials and premium technology. Sign in to browse our exclusive catalog.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Sign In</a></li>
+          <li><a href="register.html">Create Account</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Support</h4>
+        <ul class="footer-links">
+          <li><a href="#" class="policy-link" data-policy="shipping">Shipping & Delivery</a></li>
+          <li><a href="#" class="policy-link" data-policy="returns">Returns & Exchanges</a></li>
+          <li><a href="#" class="policy-link" data-policy="contact">Customer Care</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 AuraStore. All rights reserved.</p>
+      <p>Secure 256-bit SSL Session</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

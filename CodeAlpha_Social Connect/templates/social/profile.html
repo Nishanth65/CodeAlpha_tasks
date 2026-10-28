@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}@{{ profile_user.username }} &bull; Social Connect{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-banner"></div>
+    <div class="profile-header-content">
+        <div class="profile-avatar-row">
+            <img src="{{ profile.avatar_url }}" alt="{{ profile_user.username }}" class="profile-avatar-lg">
+            <div>
+                {% if is_self %}
+                    <a href="{% url 'edit_profile' %}" class="btn-secondary" style="font-weight: 700;">Edit Profile</a>
+                {% else %}
+                    <button type="button" 
+                            class="btn-follow js-follow-btn {% if is_following %}following-state{% else %}follow-state{% endif %}" 
+                            data-username="{{ profile_user.username }}" 
+                            data-url="{% url 'toggle_follow' username=profile_user.username %}">
+                        {% if is_following %}Following{% else %}Follow{% endif %}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="profile-meta">
+            <h1 class="profile-name">
+                {% if profile_user.first_name %}{{ profile_user.first_name }} {{ profile_user.last_name }}{% else %}{{ profile_user.username }}{% endif %}
+            </h1>
+            <div class="profile-handle">@{{ profile_user.username }}</div>
+
+            {% if profile.bio %}
+                <p class="profile-bio">{{ profile.bio }}</p>
+            {% else %}
+                <p class="profile-bio" style="color: var(--text-subtle); font-style: italic;">No bio added yet.</p>
+            {% endif %}
+
+            <div class="profile-details-row">
+                {% if profile.location %}
+                <div class="profile-detail-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>{{ profile.location }}</span>
+                </div>
+                {% endif %}
+                <div class="profile-detail-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>Joined {{ profile_user.date_joined|date:"F Y" }}</span>
+                </div>
+            </div>
+
+            <!-- Followers / Following / Posts Counts -->
+            <div class="profile-stats">
+                <a href="{% url 'following_list' username=profile_user.username %}" class="profile-stat-link">
+                    <span class="stat-number" id="following-count-{{ profile_user.username }}">{{ following_count }}</span>
+                    <span>Following</span>
+                </a>
+                <a href="{% url 'followers_list' username=profile_user.username %}" class="profile-stat-link">
+                    <span class="stat-number" id="followers-count-{{ profile_user.username }}">{{ followers_count }}</span>
+                    <span>Followers</span>
+                </a>
+                <div class="profile-stat-link" style="cursor: default;">
+                    <span class="stat-number">{{ posts_count }}</span>
+                    <span>Posts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User's Posts Feed Header -->
+<div class="feed-header" style="margin-bottom: 20px;">
+    <div class="feed-header-title">
+        <span>Posts by @{{ profile_user.username }}</span>
+    </div>
+</div>
+
+<!-- User's Posts Listing -->
+<div class="feed-posts-container">
+    {% if posts %}
+        {% for post in posts %}
+            {% include 'social/post_card.html' with post=post liked_post_ids=liked_post_ids %}
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <h3 class="empty-state-title">No posts yet</h3>
+            <p class="empty-state-desc">{% if is_self %}You haven't published any posts yet. Start sharing your journey!{% else %}@{{ profile_user.username }} hasn't published any posts yet.{% endif %}</p>
+            {% if is_self %}
+                <a href="{% url 'feed' %}" class="btn-primary btn-sm">Create a Post</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

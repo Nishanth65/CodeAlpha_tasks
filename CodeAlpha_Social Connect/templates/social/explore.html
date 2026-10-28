@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Discover People &bull; Social Connect{% endblock %}
+
+{% block content %}
+<div class="feed-header" style="margin-bottom: 24px;">
+    <div class="feed-header-title">
+        <span>Discover People</span>
+    </div>
+</div>
+
+<form action="{% url 'explore' %}" method="get" class="search-form" style="margin-bottom: 24px;">
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input type="text" name="q" placeholder="Search people by name, username or bio..." class="search-input" value="{{ search_query|default:'' }}">
+</form>
+
+<div class="user-list-container">
+    {% if users %}
+        {% for u in users %}
+        <div class="post-card" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px;">
+            <div style="display: flex; align-items: center; gap: 16px; min-width: 0; flex: 1;">
+                <a href="{% url 'profile' username=u.username %}">
+                    <img src="{{ u.profile.avatar_url }}" alt="{{ u.username }}" class="user-avatar-sm" style="width: 48px; height: 48px;">
+                </a>
+                <div style="min-width: 0;">
+                    <a href="{% url 'profile' username=u.username %}" class="post-author-name">
+                        {% if u.first_name %}{{ u.first_name }} {{ u.last_name }}{% else %}{{ u.username }}{% endif %}
+                    </a>
+                    <div class="post-author-handle">@{{ u.username }}</div>
+                    {% if u.profile.bio %}
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 420px;">
+                        {{ u.profile.bio }}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="button" 
+                    class="btn-follow js-follow-btn {% if u.id in current_user_following_ids %}following-state{% else %}follow-state{% endif %}" 
+                    data-username="{{ u.username }}" 
+                    data-url="{% url 'toggle_follow' username=u.username %}">
+                {% if u.id in current_user_following_ids %}Following{% else %}Follow{% endif %}
+            </button>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <h3 class="empty-state-title">No people found</h3>
+            <p class="empty-state-desc">Try searching with a different term.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

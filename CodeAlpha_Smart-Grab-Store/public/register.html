@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create an Account | Smart Grab Store</title>
+  <meta name="description" content="Register an account with Smart Grab Store for fast checkout, order tracking, and exclusive discounts." />
+  <link rel="icon" type="image/png" href="images/smart-grab-logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="login.html" class="brand-logo" id="brand-logo">
+        <div class="brand-icon">
+          <img src="images/smart-grab-logo.png" alt="Smart Grab Store Logo" class="brand-logo-img" />
+        </div>
+        <span>Smart Grab <span class="highlight">Store</span></span>
+      </a>
+
+      <nav class="nav-menu">
+        <div id="nav-auth-container" style="display: flex; align-items: center; gap: 14px;">
+          <a href="login.html" class="nav-link" id="nav-login">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Sign In
+          </a>
+          <a href="register.html" class="nav-link active" id="nav-register">Create Account</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Register Form Container -->
+  <main class="container">
+    <div class="auth-wrapper">
+      <div class="auth-header">
+        <div class="auth-icon">📝</div>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join AuraStore to start shopping our curated collection</p>
+      </div>
+
+      <div id="register-error" class="alert alert-danger" role="alert" style="display: none;"></div>
+      <div id="register-success" class="alert alert-success" role="status" style="display: none;"></div>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="register-name">Full Name *</label>
+          <input
+            type="text"
+            id="register-name"
+            name="full_name"
+            class="form-control"
+            placeholder="e.g. Priya Sharma"
+            required
+            minlength="2"
+            autocomplete="name"
+          />
+          <div class="field-error-hint" id="register-name-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="register-email">Email Address *</label>
+          <input
+            type="email"
+            id="register-email"
+            name="email"
+            class="form-control"
+            placeholder="name@example.com"
+            required
+            autocomplete="email"
+          />
+          <div class="field-error-hint" id="register-email-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="register-password">Password (min. 6 characters) *</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              class="form-control"
+              placeholder="••••••••"
+              minlength="6"
+              required
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="btn-toggle-password"
+              id="toggle-register-password"
+              aria-label="Show password"
+              title="Show or hide password"
+            >
+              <svg class="eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+          <div class="field-error-hint" id="register-password-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="register-confirm-password">Confirm Password *</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="register-confirm-password"
+              name="confirm_password"
+              class="form-control"
+              placeholder="••••••••"
+              minlength="6"
+              required
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="btn-toggle-password"
+              id="toggle-register-confirm-password"
+              aria-label="Show confirm password"
+              title="Show or hide password"
+            >
+              <svg class="eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+          <div class="field-error-hint" id="register-confirm-password-error"></div>
+        </div>
+
+        <button type="submit" id="btn-register-submit" class="btn-auth-submit">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html" id="link-to-login">Sign in here</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="login.html" class="brand-logo">
+          <div class="brand-icon">
+            <img src="images/smart-grab-logo.png" alt="Smart Grab Store Logo" class="brand-logo-img" />
+          </div>
+          <span>Smart Grab <span class="highlight">Store</span></span>
+        </a>
+        <p class="footer-text">Curated lifestyle essentials and premium technology. Sign up to begin shopping.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Sign In</a></li>
+          <li><a href="register.html">Create Account</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Support</h4>
+        <ul class="footer-links">
+          <li><a href="#" class="policy-link" data-policy="shipping">Shipping & Delivery</a></li>
+          <li><a href="#" class="policy-link" data-policy="returns">Returns & Exchanges</a></li>
+          <li><a href="#" class="policy-link" data-policy="contact">Customer Care</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 AuraStore. All rights reserved.</p>
+      <p>Secure 256-bit SSL Session</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

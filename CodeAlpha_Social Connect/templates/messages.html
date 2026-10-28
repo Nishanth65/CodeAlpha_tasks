@@ -1,0 +1,10 @@
+{% if messages %}
+<div class="messages-container" id="toast-messages">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% elif message.tags == 'info' %}info{% else %}success{% endif %}">
+        <span>{{ message }}</span>
+        <button type="button" class="alert-close" aria-label="Close">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

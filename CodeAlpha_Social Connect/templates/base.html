@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Social Connect - Modern, vibrant social media platform built for connecting minds and sharing moments.">
+    <title>{% block title %}Social Connect{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+    {% include 'messages.html' %}
+
+    {% if user.is_authenticated and not is_auth_page %}
+    <!-- Mobile Header -->
+    <header class="mobile-top-header">
+        <a href="{% url 'feed' %}" class="brand-link">
+            <img src="{% static 'images/logo.svg' %}" alt="Social Connect" class="brand-logo"
+                style="width: 34px; height: 34px;">
+            <span class="brand-title" style="font-size: 1.15rem;">SocialConnect</span>
+        </a>
+        <a href="{% url 'profile' username=request.user.username %}">
+            <img src="{{ request.user.profile.avatar_url }}" alt="{{ request.user.username }}" class="user-avatar-xs"
+                style="border: 2px solid var(--primary);">
+        </a>
+    </header>
+
+    <div class="app-container">
+        <!-- Desktop Sidebar -->
+        {% include 'sidebar.html' %}
+
+        <!-- Main Feed / Content -->
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Right Discovery / Suggested Users Column -->
+        {% block right_sidebar %}
+        <aside class="right-sidebar">
+            <div class="widget-card">
+                <form action="{% url 'feed' %}" method="get" class="search-form">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" name="q" placeholder="Search posts & people..." class="search-input"
+                        value="{{ search_query|default:'' }}">
+                </form>
+
+                <div class="widget-title">
+                    <span>Suggested for you</span>
+                    <a href="{% url 'explore' %}" style="font-size: 0.8rem; color: var(--primary);">See all</a>
+                </div>
+
+                <div class="suggested-users-list">
+                    {% if suggested_users %}
+                    {% for sug_user in suggested_users %}
+                    <div class="suggested-user-item">
+                        <div class="suggested-user-info">
+                            <a href="{% url 'profile' username=sug_user.username %}">
+                                <img src="{{ sug_user.profile.avatar_url }}" alt="{{ sug_user.username }}"
+                                    class="user-avatar-sm" style="width: 38px; height: 38px;">
+                            </a>
+                            <div class="suggested-text">
+                                <a href="{% url 'profile' username=sug_user.username %}" class="suggested-name">
+                                    {% if sug_user.first_name %}{{ sug_user.first_name }} {{ sug_user.last_name }}{%
+                                    else %}{{ sug_user.username }}{% endif %}
+                                </a>
+                                <span class="suggested-handle">@{{ sug_user.username }}</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-follow follow-state js-follow-btn"
+                            data-username="{{ sug_user.username }}"
+                            data-url="{% url 'toggle_follow' username=sug_user.username %}">
+                            Follow
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="color: var(--text-subtle); font-size: 0.88rem;">No new suggestions right now.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="widget-card" style="font-size: 0.8rem; color: var(--text-subtle); line-height: 1.6;">
+                <p>&copy; 2026 Social Connect &bull; Built by J Nishanth </p>
+
+            </div>
+        </aside>
+        {% endblock %}
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-bar">
+        <a href="{% url 'feed' %}"
+            class="mobile-nav-item {% if request.resolver_match.url_name == 'feed' %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Feed</span>
+        </a>
+        <a href="{% url 'explore' %}"
+            class="mobile-nav-item {% if request.resolver_match.url_name == 'explore' %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+            </svg>
+            <span>Explore</span>
+        </a>
+        <a href="{% url 'profile' username=request.user.username %}"
+            class="mobile-nav-item {% if request.resolver_match.url_name == 'profile' and request.resolver_match.kwargs.username == request.user.username %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Profile</span>
+        </a>
+        <a href="{% url 'edit_profile' %}"
+            class="mobile-nav-item {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
+            </svg>
+            <span>Settings</span>
+        </a>
+    </nav>
+    {% else %}
+    <main class="standalone-content">
+        {% block standalone %}{% endblock %}
+    </main>
+    {% endif %}
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>
